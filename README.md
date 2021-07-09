@@ -13,11 +13,11 @@ Read through GitHub’s Markdown guide to get an understanding for how Markdown�
 
 By having one Markdown file represent each encyclopedia entry, we can make our entries more human-friendly to write and edit. When a user views our encyclopedia entry, though, we’ll need to convert that Markdown into HTML before displaying it to the user.
 
-##Getting Started
+## Getting Started
 
     Download the distribution code from https://cdn.cs50.net/web/2020/spring/projects/1/wiki.zip and unzip it.
 
-##Understanding
+## Understanding
 
 In the distribution code is a Django project called wiki that contains a single app called encyclopedia.
 
@@ -35,7 +35,7 @@ You can find the template by looking at encyclopedia/templates/encyclopedia/inde
 
 Complete the implementation of your Wiki encyclopedia. You must fulfill the following requirements:
 
-    **Entry Page:** Visiting /wiki/TITLE, where TITLE is the title of an encyclopedia entry, should render a page that displays the contents of that encyclopedia entry.
+    ** Entry Page: ** Visiting /wiki/TITLE, where TITLE is the title of an encyclopedia entry, should render a page that displays the contents of that encyclopedia entry.
         The view should get the content of the encyclopedia entry by calling the appropriate util function.
         If an entry is requested that does not exist, the user should be presented with an error page indicating that their requested page was not found.
         If the entry does exist, the user should be presented with a page that displays the content of the entry. The title of the page should include the name of the entry.
