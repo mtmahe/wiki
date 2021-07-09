@@ -31,7 +31,7 @@ Now, let’s look at encyclopedia/views.py. There’s just one view here now, th
 
 You can find the template by looking at encyclopedia/templates/encyclopedia/index.html. This template inherits from a base layout.html file and specifies what the page’s title should be, and what should be in the body of the page: in this case, an unordered list of all of the entries in the encyclopedia. layout.html, meanwhile, defines the broader structure of the page: each page has a sidebar with a search field (that for now does nothing), a link to go home, and links (that don’t yet work) to create a new page or visit a random page.
 
-##Specification
+## Specification
 
 Complete the implementation of your Wiki encyclopedia. You must fulfill the following requirements:
 
