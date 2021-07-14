@@ -6,11 +6,11 @@
 
 {% block body %}
     <h1>All Pages</h1>
-
+    <p>Search query: {{ query }}</p>
     <ul>
-        {% for ent in entry %}
+        {% for entry in matches %}
             <li>
-                <a href="/{{ ent }}">{{ ent }}</a>
+                <a href="/{{ entry }}">{{ entry }}</a>
             </li>
         {% endfor %}
     </ul>
