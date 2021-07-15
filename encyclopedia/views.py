@@ -7,11 +7,9 @@ from . import util
 
 
 
-class SearchForm(forms.Form):
-    item = forms.CharField(label="New Search")
-
-
-
+class NewEntryForm(forms.Form):
+    title = forms.CharField(label="New Entry Title")
+    entry = forms.CharField(widget=forms.Textarea)
 
 
 def index(request):
@@ -65,4 +63,22 @@ def search(request):
         return render(request, "encyclopedia/search.html", {
             "matches": matches,
             "query": query
+        })
+
+
+def create(request):
+    """ Create a new entry. If entry name already exists give error message
+    else, save the new entry as an .md file. """
+
+    if request.method == "POST":
+        form = NewEntryForm(request.POST)
+        if form.is_valid():
+            entry = form.cleaned_data["entry"]
+            return render(request, "encyclopedia/create.html", {
+                "form": NewEntryForm
+            })
+
+    else:
+        return render(request, "encyclopedia/create.html", {
+            "form": NewEntryForm()
         })
