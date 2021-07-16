@@ -1,7 +1,9 @@
 import markdown2
+import os.path
 
 from django.shortcuts import render
 from django import forms
+from django.forms import ModelForm, Textarea
 
 from . import util
 
@@ -9,7 +11,7 @@ from . import util
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="New Entry Title")
-    entry = forms.CharField(widget=forms.Textarea)
+    entry = forms.CharField(label="", help_text="", widget=forms.Textarea)
 
 
 def index(request):
@@ -74,11 +76,35 @@ def create(request):
         form = NewEntryForm(request.POST)
         if form.is_valid():
             entry = form.cleaned_data["entry"]
+            title = form.cleaned_data["title"]
+
+            # check if title exists
+            if util.get_entry(title) != None:
+                return render(request, "encyclopedia/error.html", {
+                    "error": "That entry already exists."
+                })
+
+            else:
+                util.save_entry(title, entry)
+                entry = markdown2.markdown(entry)
+                return render(request, "encyclopedia/entry.html", {
+                    "entry": entry
+                })
+
+        else:
             return render(request, "encyclopedia/create.html", {
-                "form": NewEntryForm
+                "form": NewEntryForm()
             })
 
     else:
         return render(request, "encyclopedia/create.html", {
             "form": NewEntryForm()
         })
+
+
+def error(request):
+    """ display an error message """
+
+    return render(request, "encyclopedia/error.html", {
+        "error": error
+    })
