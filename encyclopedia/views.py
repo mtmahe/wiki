@@ -96,7 +96,7 @@ def create(request):
 
             else:
                 messages.error(request, f'The title {title} already exists')
-                
+
     return render(request, "encyclopedia/create.html", {
         "form": NewEntryForm()
     })
@@ -116,7 +116,7 @@ def edit(request, name):
             messages.success(request, 'Entry saved successfully.')
             entry = markdown2.markdown(entry)
 
-            return redirect(reverse('entry', args=[name]))
+            return redirect(reverse('encyclopedia:entry', args=[name]))
 
         else:
             messages.error(request, 'Form invalid.')
