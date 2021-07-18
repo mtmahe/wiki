@@ -113,7 +113,7 @@ def create(request):
 
 
 def edit(request, name):
-    """ edit a page """
+    """ Edit a page. Overwrite old .md file of that name and go to the entry. """
     args = {}
 
     if request.method == "POST":
