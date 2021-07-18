@@ -1,17 +1,24 @@
 import markdown2
 import os.path
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from django.forms import ModelForm, Textarea
+from django.contrib import messages
+from django.urls import reverse
 
 from . import util
 
 
 
 class NewEntryForm(forms.Form):
+    help_text = "New entry goes here. Please use github markdown."
     title = forms.CharField(label="New Entry Title")
     entry = forms.CharField(label="", help_text="", widget=forms.Textarea)
+
+
+class EditEntryForm(forms.Form):
+    edit_entry = forms.CharField(label="", widget=forms.Textarea)
 
 
 def index(request):
@@ -32,7 +39,8 @@ def entry(request, name):
         entry = "Error: The requested page was not found."
 
     return render(request, "encyclopedia/entry.html", {
-        "entry": entry
+        "entry": entry,
+        "name": name
     })
 
 
@@ -80,9 +88,11 @@ def create(request):
 
             # check if title exists
             if util.get_entry(title) != None:
-                return render(request, "encyclopedia/error.html", {
-                    "error": "That entry already exists."
-                })
+                error = "That entry already exists."
+                return error(request, error)
+                #return render(request, "encyclopedia/error.html", {
+                #    "error": error
+                #})
 
             else:
                 util.save_entry(title, entry)
@@ -102,7 +112,39 @@ def create(request):
         })
 
 
-def error(request):
+def edit(request, name):
+    """ edit a page """
+    args = {}
+
+    if request.method == "POST":
+        form = EditEntryForm(request.POST)
+
+        if form.is_valid():
+            messages.debug(request, 'Form is valid.')
+            entry = form.cleaned_data["edit_entry"]
+            util.save_entry(name, entry)
+            messages.success(request, 'Entry saved successfully.')
+            entry = markdown2.markdown(entry)
+
+            return redirect(reverse('entry', args=[name]))
+
+        else:
+            messages.error(request, 'Form invalid.')
+
+    template = util.get_entry(name)
+
+    if template:
+        entry = template
+    else:
+        entry = ""
+    return render(request, "encyclopedia/edit.html", {
+        "name": name,
+        "entry": entry,
+        "form": EditEntryForm(initial={'edit_entry':entry})
+    })
+
+
+def error(request, error):
     """ display an error message """
 
     return render(request, "encyclopedia/error.html", {
