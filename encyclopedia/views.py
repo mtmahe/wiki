@@ -87,29 +87,19 @@ def create(request):
             title = form.cleaned_data["title"]
 
             # check if title exists
-            if util.get_entry(title) != None:
-                error = "That entry already exists."
-                return error(request, error)
-                #return render(request, "encyclopedia/error.html", {
-                #    "error": error
-                #})
-
-            else:
+            if util.get_entry(title) == None:
                 util.save_entry(title, entry)
                 entry = markdown2.markdown(entry)
                 return render(request, "encyclopedia/entry.html", {
                     "entry": entry
                 })
 
-        else:
-            return render(request, "encyclopedia/create.html", {
-                "form": NewEntryForm()
-            })
-
-    else:
-        return render(request, "encyclopedia/create.html", {
-            "form": NewEntryForm()
-        })
+            else:
+                messages.error(request, f'The title {title} already exists')
+                
+    return render(request, "encyclopedia/create.html", {
+        "form": NewEntryForm()
+    })
 
 
 def edit(request, name):

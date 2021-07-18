@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block body %}
+  <div>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
