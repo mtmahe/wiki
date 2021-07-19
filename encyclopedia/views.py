@@ -7,6 +7,8 @@ from django.forms import ModelForm, Textarea
 from django.contrib import messages
 from django.urls import reverse
 
+from random import randint
+
 from . import util
 
 
@@ -134,9 +136,11 @@ def edit(request, name):
     })
 
 
-def error(request, error):
-    """ display an error message """
+def random(request):
+    """ Redirect to a random entry page. """
 
-    return render(request, "encyclopedia/error.html", {
-        "error": error
-    })
+    entries = util.list_entries()
+    value = randint(0,(len(entries) - 1))
+    name = entries[value]
+
+    return redirect(reverse('encyclopedia:entry', args=[name]))
