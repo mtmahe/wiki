@@ -92,9 +92,11 @@ def create(request):
             if util.get_entry(title) == None:
                 util.save_entry(title, entry)
                 entry = markdown2.markdown(entry)
-                return render(request, "encyclopedia/entry.html", {
-                    "entry": entry
-                })
+                return redirect(reverse('encyclopedia:entry', args=[title]))
+
+                #return render(request, "encyclopedia/entry.html", {
+                #    "entry": entry
+                #})
 
             else:
                 messages.error(request, f'The title {title} already exists')
