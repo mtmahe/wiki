@@ -1,5 +1,5 @@
 # wiki
-Design a Wikipedia-like online encyclopedia.
+Design a Wikipedia-like online encyclopedia back end using Django.
 
 ## Background
 
